@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
   config.vm.hostname = "greta"
   config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
   config.vm.network "private_network", ip: "192.168.11.11"
-  config.vm.synced_folder "/laragon/www/lognes/vagrant/debian/share", "/home/share"
+  config.vm.synced_folder "/laragon/www/la-garenne/vagrant/debian/share", "/home/share"
   config.vm.provision "shell", inline: <<-SHELL
 	apt-get update
 	apt-get upgrade -y
