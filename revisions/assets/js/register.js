@@ -26,7 +26,7 @@ document.addEventListener(
         );
 
         /**
-         * Requête AJAX : liste des départements
+         * Requête AJAX : liste des départements (XMLHttpRequest)
          */
 
         // Etape 1 : instancie l'objet AJAX
@@ -56,13 +56,24 @@ document.addEventListener(
         );
 
         /**
-         * Requête AJAX : liste des villes
+         * Requête AJAX : liste des villes (Fetch)
          */
         document.querySelector('#dept').addEventListener(
             'change',
             function () {
-                const resp = fetch('https://geo.api.gouv.fr/departements/' + this.value + '/communes');
-                console.log(resp.json());
+                fetch('https://geo.api.gouv.fr/departements/' + this.value + '/communes?fields=nom,code')
+                    .then(function (response) {
+                        if (response.status >= 200 && response.status < 300) {
+                            return response
+                        } else {
+                            const error = new Error(response.statusText)
+                            error.response = response
+                            throw error
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.log(error))
             }
         );
     }
