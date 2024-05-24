@@ -9,9 +9,18 @@ document.addEventListener(
          */
         const elt = document.querySelector('#salary');
         elt.addEventListener(
-            'change',
+            'input',
             function () {
                 document.querySelector('#valSal').textContent = this.value + " €";
+            }
+        );
+        /**
+         * Evénement : changement date de naissance
+         */
+        document.querySelector('#dob').addEventListener(
+            'change',
+            function (evt) {
+                document.querySelector('#age').textContent = age(evt.target.value) + (age(this.value) > 1 ? ' ans' : ' an');
             }
         );
     }
