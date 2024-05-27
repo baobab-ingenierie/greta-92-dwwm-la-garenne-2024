@@ -38,6 +38,21 @@ document.addEventListener(
         );
 
         /**
+         * Evénement : enregistrement local
+         */
+        document.querySelector("#local").addEventListener(
+            'click',
+            function () {
+                const inputs = document.querySelectorAll("form [name]");
+                let toStore = {};
+                inputs.forEach(function (elt) {
+                    toStore[elt.name] = elt.value;
+                });
+                console.log(toStore);
+            }
+        );
+
+        /**
          * Requête AJAX : liste des départements (XMLHttpRequest)
          */
 
