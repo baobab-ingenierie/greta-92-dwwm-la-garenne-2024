@@ -1,0 +1,29 @@
+BASE
+#id
+.class
+tag
+
+COMPOSES
+p.red
+div#main
+
+HIERARCHIQUES
+div > p : parent/enfant
+div article : ascendant/descendant
+h2 + p : frères/soeurs contigus
+ul ~ p : frères/soeurs
+
+ATTRIBUTS
+p[id][class] : paragraphe ayant attributs id et class
+a[href^=http] : href commence par "http"
+a[href*=greta] : href contient "greta"
+a[href$=.fr] : href finit par ".fr"
+
+PSEUDO-CLASSES
+:first-of-type
+:first-child
+:nth-child()
+
+PSEUDO-ELEMENTS
+::first-line
+::first-letter

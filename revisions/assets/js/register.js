@@ -26,6 +26,18 @@ document.addEventListener(
         );
 
         /**
+         * Evénement : coche la case "tous"
+         */
+        document.querySelector("#job_all").addEventListener(
+            'change',
+            function (evt) {
+                document.querySelectorAll("fieldset input[type=checkbox][name^=job]").forEach(function (elt) {
+                    elt.checked = evt.target.checked;
+                });
+            }
+        );
+
+        /**
          * Requête AJAX : liste des départements (XMLHttpRequest)
          */
 
@@ -63,6 +75,7 @@ document.addEventListener(
             function () {
                 fetch('https://geo.api.gouv.fr/departements/' + this.value + '/communes?fields=nom,code')
                     .then(function (response) {
+                        // console.log(response);
                         if (response.status >= 200 && response.status < 300) {
                             return response
                         } else {
@@ -72,7 +85,18 @@ document.addEventListener(
                         }
                     })
                     .then(response => response.json())
-                    .then(data => console.log(data))
+                    .then(data => {
+                        // console.log(data)
+                        const city = document.querySelector("select[id^=city]");
+                        let opt;
+                        city.innerHTML = "";
+                        data.forEach(function (elt) {
+                            opt = document.createElement("option");
+                            opt.value = elt.code;
+                            opt.textContent = elt.nom;
+                            city.appendChild(opt);
+                        });
+                    })
                     .catch(error => console.log(error))
             }
         );
