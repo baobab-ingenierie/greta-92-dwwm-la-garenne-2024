@@ -88,6 +88,7 @@ document.addEventListener(
                 // Crée ou ouvre la BDD
                 const idb = window.indexedDB;
                 const cnn = idb.open('business', 1);
+
                 // Si BDD n'existe pas ou version différente
                 // création implicite
                 cnn.addEventListener(
@@ -105,8 +106,50 @@ document.addEventListener(
                     }
                 );
 
-                // Affiche message 
-                alert('Stockage local terminé avec succès !');
+                // Si connexion OK
+                cnn.addEventListener(
+                    'success',
+                    function () {
+                        const dbs = cnn.result;
+                        const tx = dbs.transaction(['candidates'], 'readwrite');
+                        const obs = tx.objectStore('candidates');
+                        const req = obs.put(toStore);
+
+                        // Si requête OK
+                        req.addEventListener(
+                            'success',
+                            function () {
+                                console.info('Stockage IndexedDB OK');
+                            }
+                        );
+
+                        // Si requête KO
+                        req.addEventListener(
+                            'error',
+                            function (err) {
+                                console.error('Une erreur est survenue : ' + err);
+                            }
+                        );
+
+                        // Quand transaction finie
+                        tx.addEventListener(
+                            'complete',
+                            function () {
+                                dbs.close();
+                            }
+                        );
+                        // Affiche message 
+                        alert('Stockage local terminé avec succès !');
+                    }
+                );
+
+                // Si connexion KO
+                cnn.addEventListener(
+                    'error',
+                    function () {
+                        console.error('Erreur lors de la connexion');
+                    }
+                );
             }
         );
 
