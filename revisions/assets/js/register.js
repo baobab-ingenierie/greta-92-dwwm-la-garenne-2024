@@ -43,8 +43,9 @@ document.addEventListener(
         document.querySelector("#local").addEventListener(
             'click',
             function () {
+                // Génère un objet JSON à stocker
                 const inputs = document.querySelectorAll("form [name]");
-                let toStore = {}, val = [];
+                let toStore = {}, val = [], chk = [];
                 inputs.forEach(function (elt) {
                     console.log(elt.type);
                     switch (elt.type) {
@@ -59,13 +60,29 @@ document.addEventListener(
                                     val.push(opt.value);
                                 }
                             });
-                            toStore[elt.name] = val;
+                            toStore[elt.name.slice(0, elt.name.length - 2)] = val;
+                            break;
+                        case 'checkbox':
+                            if (elt.checked) {
+                                chk.push(elt.value);
+                            }
+                            toStore[elt.name.slice(0, elt.name.length - 2)] = chk;
                             break;
                         default:
                             toStore[elt.name] = elt.value;
                     }
                 });
                 console.log(toStore);
+                // Enregistre dans un cookie
+                // name=value; expires=xxxxx; secure; httponly
+                let end = new Date();
+                end.setTime(end.getTime() + (7 * 24 * 60 * 60 * 1000));
+                document.cookie = `${document.querySelector('#fname').value.toLowerCase()}=${JSON.stringify(toStore)}; Expires=${end.toLocaleString()}; Secure`;
+                // Enregistre dans Web storage
+                sessionStorage.setItem(document.querySelector('#fname').value.toLowerCase(), JSON.stringify(toStore));
+                localStorage.setItem(document.querySelector('#fname').value.toLowerCase(), JSON.stringify(toStore));
+                // Affiche message 
+                alert('Stockage local terminé avec succès !');
             }
         );
 
