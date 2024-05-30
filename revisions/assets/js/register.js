@@ -44,9 +44,26 @@ document.addEventListener(
             'click',
             function () {
                 const inputs = document.querySelectorAll("form [name]");
-                let toStore = {};
+                let toStore = {}, val = [];
                 inputs.forEach(function (elt) {
-                    toStore[elt.name] = elt.value;
+                    console.log(elt.type);
+                    switch (elt.type) {
+                        case 'radio':
+                            if (elt.checked) {
+                                toStore[elt.name] = elt.value;
+                            }
+                            break;
+                        case 'select-multiple':
+                            elt.childNodes.forEach(function (opt) {
+                                if (opt.selected) {
+                                    val.push(opt.value);
+                                }
+                            });
+                            toStore[elt.name] = val;
+                            break;
+                        default:
+                            toStore[elt.name] = elt.value;
+                    }
                 });
                 console.log(toStore);
             }
