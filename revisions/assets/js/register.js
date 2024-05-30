@@ -73,14 +73,38 @@ document.addEventListener(
                     }
                 });
                 console.log(toStore);
+
                 // Enregistre dans un cookie
                 // name=value; expires=xxxxx; secure; httponly
                 let end = new Date();
                 end.setTime(end.getTime() + (7 * 24 * 60 * 60 * 1000));
                 document.cookie = `${document.querySelector('#fname').value.toLowerCase()}=${JSON.stringify(toStore)}; Expires=${end.toLocaleString()}; Secure`;
+
                 // Enregistre dans Web storage
                 sessionStorage.setItem(document.querySelector('#fname').value.toLowerCase(), JSON.stringify(toStore));
                 localStorage.setItem(document.querySelector('#fname').value.toLowerCase(), JSON.stringify(toStore));
+
+                // Enregistre dans Indexed DB
+                // Crée ou ouvre la BDD
+                const idb = window.indexedDB;
+                const cnn = idb.open('business', 1);
+                // Si BDD n'existe pas ou version différente
+                // création implicite
+                cnn.addEventListener(
+                    'upgradeneeded',
+                    function () {
+                        const dbs = this.result;
+                        // Si OS n'existe pas alors création explicite
+                        if (!dbs.objectStoreNames.contains('candidates')) {
+                            const obs = dbs.createObjectStore(
+                                'candidates',
+                                { autoIncrement: true }
+                            );
+                            const idx = obs.createIndex('idxName', ['fname']);
+                        }
+                    }
+                );
+
                 // Affiche message 
                 alert('Stockage local terminé avec succès !');
             }
