@@ -1,4 +1,9 @@
 *.pptx
 *.pdf
+
+# Looping
 *.lo1
 LoopingImage.jpg
+
+# Vagrant
+.vagrant/
