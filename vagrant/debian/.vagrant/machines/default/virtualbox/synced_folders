@@ -1,1 +1,0 @@
-{"virtualbox":{"/home/share":{"guestpath":"/home/share","hostpath":"D:/laragon/www/la-garenne/vagrant/debian/share","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"D:/laragon/www/la-garenne/vagrant/debian","disabled":false,"__vagrantfile":true}}}
